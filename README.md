@@ -20,7 +20,7 @@ A beautiful, modern pixel art gallery website with cyberpunk aesthetics and powe
 
 ## 🎯 Live Demo
 
-Visit the live gallery at: `https://your-username.github.io/photo_site`
+Visit the live gallery at: `https://tomo3141592653.github.io/photo_site`
 
 ## 📦 Quick Setup
 
@@ -31,7 +31,7 @@ Visit the live gallery at: `https://your-username.github.io/photo_site`
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/your-username/photo_site.git
+git clone https://github.com/tomo3141592653/photo_site.git
 cd photo_site
 npm install
 npm run setup
@@ -44,10 +44,10 @@ aws configure
 # Enter your AWS credentials
 
 # Create S3 bucket
-aws s3 mb s3://your-gallery-bucket-name
+aws s3 mb s3://tomo3141592653-gallery
 
 # Set public read permissions
-aws s3api put-bucket-policy --bucket your-gallery-bucket-name --policy '{
+aws s3api put-bucket-policy --bucket tomo3141592653-gallery --policy '{
   "Version": "2012-10-17",
   "Statement": [
     {
@@ -55,7 +55,7 @@ aws s3api put-bucket-policy --bucket your-gallery-bucket-name --policy '{
       "Effect": "Allow", 
       "Principal": "*",
       "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::your-gallery-bucket-name/*"
+      "Resource": "arn:aws:s3:::tomo3141592653-gallery/*"
     }
   ]
 }'
@@ -66,9 +66,9 @@ Edit `config/config.json`:
 ```json
 {
   "s3": {
-    "bucket": "your-actual-bucket-name",
+    "bucket": "tomo3141592653-gallery",
     "region": "ap-northeast-1",
-    "cdnDomain": "https://your-actual-bucket-name.s3.ap-northeast-1.amazonaws.com"
+    "cdnDomain": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com"
   }
 }
 ```
