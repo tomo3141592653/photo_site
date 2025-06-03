@@ -1,0 +1,54 @@
+{
+  "artworks": [
+    {
+      "id": "20240115_001",
+      "title": "なかむら観魚店",
+      "date": "2015-05-01",
+      "year": 2015,
+      "original": "https://picsum.photos/800/600?random=1",
+      "thumbnail": "https://picsum.photos/300/200?random=1"
+    },
+    {
+      "id": "20240115_002", 
+      "title": "夕暮れの街角",
+      "date": "2024-01-15",
+      "year": 2024,
+      "original": "https://picsum.photos/800/600?random=2",
+      "thumbnail": "https://picsum.photos/300/200?random=2"
+    },
+    {
+      "id": "20240115_003",
+      "title": "雨の駅",
+      "date": "2024-01-10",
+      "year": 2024,
+      "original": "https://picsum.photos/800/600?random=3",
+      "thumbnail": "https://picsum.photos/300/200?random=3"
+    },
+    {
+      "id": "20240115_004",
+      "title": "桜並木",
+      "date": "2023-04-01",
+      "year": 2023,
+      "original": "https://picsum.photos/800/600?random=4",
+      "thumbnail": "https://picsum.photos/300/200?random=4"
+    },
+    {
+      "id": "20240115_005",
+      "title": "ネオン街",
+      "date": "2023-07-15",
+      "year": 2023,
+      "original": "https://picsum.photos/800/600?random=5",
+      "thumbnail": "https://picsum.photos/300/200?random=5"
+    },
+    {
+      "id": "20240115_006",
+      "title": "森の小径",
+      "date": "2022-08-20",
+      "year": 2022,
+      "original": "https://picsum.photos/800/600?random=6",
+      "thumbnail": "https://picsum.photos/300/200?random=6"
+    }
+  ],
+  "totalCount": 6,
+  "lastUpdated": "2024-01-15T00:00:00.000Z"
+}
