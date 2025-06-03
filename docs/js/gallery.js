@@ -20,61 +20,14 @@ class PixelGallery {
     async loadArtworks() {
         try {
             const response = await fetch('data/artworks.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             const data = await response.json();
             this.artworks = data.artworks;
         } catch (error) {
             console.error('Failed to load artworks:', error);
-            // フォールバックデータ
-            this.artworks = [
-                {
-                    id: "20240115_001",
-                    title: "なかむら観魚店",
-                    date: "2015-05-01",
-                    year: 2015,
-                    original: "https://picsum.photos/800/600?random=1",
-                    thumbnail: "https://picsum.photos/300/200?random=1"
-                },
-                {
-                    id: "20240115_002", 
-                    title: "夕暮れの街角",
-                    date: "2024-01-15",
-                    year: 2024,
-                    original: "https://picsum.photos/800/600?random=2",
-                    thumbnail: "https://picsum.photos/300/200?random=2"
-                },
-                {
-                    id: "20240115_003",
-                    title: "雨の駅",
-                    date: "2024-01-10",
-                    year: 2024,
-                    original: "https://picsum.photos/800/600?random=3",
-                    thumbnail: "https://picsum.photos/300/200?random=3"
-                },
-                {
-                    id: "20240115_004",
-                    title: "桜並木",
-                    date: "2023-04-01",
-                    year: 2023,
-                    original: "https://picsum.photos/800/600?random=4",
-                    thumbnail: "https://picsum.photos/300/200?random=4"
-                },
-                {
-                    id: "20240115_005",
-                    title: "ネオン街",
-                    date: "2023-07-15",
-                    year: 2023,
-                    original: "https://picsum.photos/800/600?random=5",
-                    thumbnail: "https://picsum.photos/300/200?random=5"
-                },
-                {
-                    id: "20240115_006",
-                    title: "森の小径",
-                    date: "2022-08-20",
-                    year: 2022,
-                    original: "https://picsum.photos/800/600?random=6",
-                    thumbnail: "https://picsum.photos/300/200?random=6"
-                }
-            ];
+            this.artworks = [];
         }
     }
 
@@ -138,9 +91,17 @@ class PixelGallery {
 
     // Random display functions
     showRandomArtwork() {
-        if (this.artworks.length === 0) return;
+        if (this.artworks.length === 0) {
+            console.error('No artworks available');
+            return;
+        }
         
         const artwork = this.artworks[this.currentRandomIndex];
+        if (!artwork || !artwork.original) {
+            console.error('Invalid artwork data:', artwork);
+            return;
+        }
+
         const loadingOverlay = document.getElementById('loadingOverlay');
         const nextBtn = document.getElementById('nextRandomBtn');
         const randomImage = document.getElementById('randomImage');
@@ -154,16 +115,17 @@ class PixelGallery {
         const img = new Image();
         img.onload = () => {
             randomImage.src = artwork.original;
-            randomTitle.textContent = artwork.title;
+            randomTitle.textContent = artwork.title || '無題';
             randomMeta.textContent = this.formatDate(artwork.date);
             
             loadingOverlay.style.display = 'none';
             nextBtn.disabled = false;
         };
         img.onerror = () => {
+            console.error('Failed to load image:', artwork.original);
             // Fallback if image fails to load
-            randomImage.src = artwork.thumbnail;
-            randomTitle.textContent = artwork.title;
+            randomImage.src = artwork.thumbnail || artwork.original;
+            randomTitle.textContent = artwork.title || '無題';
             randomMeta.textContent = this.formatDate(artwork.date);
             
             loadingOverlay.style.display = 'none';
@@ -179,10 +141,16 @@ class PixelGallery {
 
     // Gallery functions
     showGallery() {
+        if (this.artworks.length === 0) {
+            document.getElementById('galleryContent').innerHTML = '<p>作品が見つかりませんでした。</p>';
+            return;
+        }
+
         const artworksByYear = {};
         
         // Group by year
         this.artworks.forEach(artwork => {
+            if (!artwork || !artwork.year) return;
             if (!artworksByYear[artwork.year]) {
                 artworksByYear[artwork.year] = [];
             }
@@ -205,10 +173,18 @@ class PixelGallery {
             `;
             
             artworks.forEach(artwork => {
+                if (!artwork || !artwork.id) return;
+                const thumbnailUrl = artwork.thumbnail || artwork.original;
+                const originalUrl = artwork.original;
+                
                 html += `
                     <div class="thumbnail-card ${this.isCompactView ? 'compact' : ''}" onclick="gallery.openModal('${artwork.id}')">
-                        <img class="thumbnail-image ${this.isCompactView ? 'compact' : ''}" src="${artwork.thumbnail}" loading="lazy" onerror="this.src='${artwork.original}'">
-                        <div class="thumbnail-title ${this.isCompactView ? 'compact' : ''}">${artwork.title}</div>
+                        <img class="thumbnail-image ${this.isCompactView ? 'compact' : ''}" 
+                             src="${thumbnailUrl}" 
+                             loading="lazy" 
+                             onerror="this.src='${originalUrl}'"
+                             alt="${artwork.title || '無題'}">
+                        <div class="thumbnail-title ${this.isCompactView ? 'compact' : ''}">${artwork.title || '無題'}</div>
                         <div class="thumbnail-meta ${this.isCompactView ? 'compact' : ''}">
                             <span>${this.formatDate(artwork.date)}</span>
                             <span class="thumbnail-date ${this.isCompactView ? 'compact' : ''}">${artwork.year}</span>
@@ -316,15 +292,20 @@ class PixelGallery {
 
     // Utility functions
     formatDate(dateString) {
-        const date = new Date(dateString);
-        return date.getFullYear() + '-' + 
-               String(date.getMonth() + 1).padStart(2, '0') + '-' + 
-               String(date.getDate()).padStart(2, '0');
+        if (!dateString) return '日付不明';
+        try {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ja-JP', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        } catch (error) {
+            console.error('Invalid date format:', dateString);
+            return '日付不明';
+        }
     }
 }
 
 // Initialize gallery
-let gallery;
-document.addEventListener('DOMContentLoaded', () => {
-    gallery = new PixelGallery();
-});
+const gallery = new PixelGallery();

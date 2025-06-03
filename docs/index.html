@@ -334,7 +334,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
             cursor: pointer;
-            aspect-ratio: 4/3;
+            min-height: 300px;
             display: flex;
             flex-direction: column;
         }
@@ -342,7 +342,7 @@
         .thumbnail-card.compact {
             padding: 8px;
             border-radius: 8px;
-            aspect-ratio: 1/1;
+            min-height: 200px;
         }
 
         .thumbnail-card:hover {
@@ -357,8 +357,9 @@
 
         .thumbnail-image {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
+            max-height: 400px;
+            object-fit: contain;
             border-radius: 10px;
             margin-bottom: 15px;
             transition: transform 0.3s ease;
@@ -366,6 +367,7 @@
         }
 
         .thumbnail-image.compact {
+            max-height: 200px;
             margin-bottom: 8px;
             border-radius: 6px;
         }

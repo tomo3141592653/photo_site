@@ -2,27 +2,27 @@
   "artworks": [
     {
       "id": "20240115_001",
-      "title": "なかむら観魚店",
+      "title": "ネオン街",
       "date": "2015-05-01",
       "year": 2015,
-      "original": "https://picsum.photos/800/600?random=1",
-      "thumbnail": "https://picsum.photos/300/200?random=1"
+      "original": "https://picsum.photos/600/600?random=1",
+      "thumbnail": "https://picsum.photos/300/300?random=1"
     },
     {
       "id": "20240115_002", 
       "title": "夕暮れの街角",
       "date": "2024-01-15",
       "year": 2024,
-      "original": "https://picsum.photos/800/600?random=2",
-      "thumbnail": "https://picsum.photos/300/200?random=2"
+      "original": "https://picsum.photos/400/600?random=2",
+      "thumbnail": "https://picsum.photos/200/300?random=2"
     },
     {
       "id": "20240115_003",
       "title": "雨の駅",
       "date": "2024-01-10",
       "year": 2024,
-      "original": "https://picsum.photos/800/600?random=3",
-      "thumbnail": "https://picsum.photos/300/200?random=3"
+      "original": "https://picsum.photos/400/600?random=3",
+      "thumbnail": "https://picsum.photos/200/300?random=3"
     },
     {
       "id": "20240115_004",
@@ -317,15 +317,15 @@
       "title": "夕暮れの漁港",
       "date": "2012-12-10",
       "year": 2012,
-      "original": "https://picsum.photos/800/600?random=40",
-      "thumbnail": "https://picsum.photos/300/200?random=40"
+      "original": "https://picsum.photos/300/600?random=40",
+      "thumbnail": "https://picsum.photos/300/600?random=40"
     },
     {
       "id": "20240115_041",
       "title": "紅葉の渓谷",
       "date": "2012-11-05",
       "year": 2012,
-      "original": "https://picsum.photos/800/600?random=41",
+      "original": "https://picsum.photos/300/600?random=41",
       "thumbnail": "https://picsum.photos/300/200?random=41"
     },
     {
@@ -333,8 +333,8 @@
       "title": "夏の祭り",
       "date": "2012-08-20",
       "year": 2012,
-      "original": "https://picsum.photos/800/600?random=42",
-      "thumbnail": "https://picsum.photos/300/200?random=42"
+      "original": "https://picsum.photos/300/600?random=42",
+      "thumbnail": "https://picsum.photos/300/600?random=42"
     },
     {
       "id": "20240115_043",
