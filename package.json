@@ -1,0 +1,42 @@
+{
+  "name": "pixel-gallery",
+  "version": "1.0.0",
+  "description": "Pixel Art Gallery - ピクセルアートギャラリー",
+  "main": "docs/index.html",
+  "scripts": {
+    "upload": "node scripts/upload.js",
+    "batch-upload": "node scripts/batch-upload.js",
+    "dev": "npx http-server docs -p 8000 -c-1",
+    "build": "echo 'Build complete - static site ready'",
+    "deploy": "git add . && git commit -m 'Update gallery' && git push",
+    "setup": "node scripts/setup.js",
+    "clean": "node scripts/clean.js"
+  },
+  "keywords": [
+    "pixel-art",
+    "gallery",
+    "art",
+    "portfolio",
+    "photography",
+    "static-site"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.1400.0",
+    "sharp": "^0.32.0",
+    "commander": "^9.0.0",
+    "mime-types": "^2.1.35"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/photo_site.git"
+  },
+  "homepage": "https://your-username.github.io/photo_site"
+}
