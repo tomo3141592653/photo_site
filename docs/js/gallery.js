@@ -7,6 +7,8 @@ class PixelGallery {
         this.currentModalIndex = 0;
         this.modalArtworks = [];
         this.isCompactView = false;
+        this.sortedArtworks = [];
+        this.currentNewestIndex = 0;
         
         this.init();
     }
@@ -25,9 +27,13 @@ class PixelGallery {
             }
             const data = await response.json();
             this.artworks = data.artworks;
+            
+            // Sort artworks by date (newest first) for newest functionality
+            this.sortedArtworks = [...this.artworks].sort((a, b) => new Date(b.date) - new Date(a.date));
         } catch (error) {
             console.error('Failed to load artworks:', error);
             this.artworks = [];
+            this.sortedArtworks = [];
         }
     }
 
@@ -41,7 +47,11 @@ class PixelGallery {
         });
 
         // Random controls
-        document.getElementById('nextRandomBtn').addEventListener('click', () => {
+        document.getElementById('newestBtn').addEventListener('click', () => {
+            this.showNewest();
+        });
+        
+        document.getElementById('randomBtn').addEventListener('click', () => {
             this.nextRandom();
         });
 
@@ -103,13 +113,15 @@ class PixelGallery {
         }
 
         const loadingOverlay = document.getElementById('loadingOverlay');
-        const nextBtn = document.getElementById('nextRandomBtn');
+        const newestBtn = document.getElementById('newestBtn');
+        const randomBtn = document.getElementById('randomBtn');
         const randomImage = document.getElementById('randomImage');
         const randomTitle = document.getElementById('randomTitle');
         const randomMeta = document.getElementById('randomMeta');
         
         loadingOverlay.style.display = 'flex';
-        nextBtn.disabled = true;
+        newestBtn.disabled = true;
+        randomBtn.disabled = true;
         
         // Preload image
         const img = new Image();
@@ -119,7 +131,8 @@ class PixelGallery {
             randomMeta.textContent = this.formatDate(artwork.date);
             
             loadingOverlay.style.display = 'none';
-            nextBtn.disabled = false;
+            newestBtn.disabled = false;
+            randomBtn.disabled = false;
         };
         img.onerror = () => {
             console.error('Failed to load image:', artwork.original);
@@ -129,7 +142,8 @@ class PixelGallery {
             randomMeta.textContent = this.formatDate(artwork.date);
             
             loadingOverlay.style.display = 'none';
-            nextBtn.disabled = false;
+            newestBtn.disabled = false;
+            randomBtn.disabled = false;
         };
         img.src = artwork.original;
     }
@@ -137,6 +151,57 @@ class PixelGallery {
     nextRandom() {
         this.currentRandomIndex = Math.floor(Math.random() * this.artworks.length);
         this.showRandomArtwork();
+    }
+
+    showNewest() {
+        if (this.sortedArtworks.length === 0) {
+            console.error('No sorted artworks available');
+            return;
+        }
+        
+        const artwork = this.sortedArtworks[this.currentNewestIndex];
+        if (!artwork || !artwork.original) {
+            console.error('Invalid newest artwork data:', artwork);
+            return;
+        }
+
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const newestBtn = document.getElementById('newestBtn');
+        const randomBtn = document.getElementById('randomBtn');
+        const randomImage = document.getElementById('randomImage');
+        const randomTitle = document.getElementById('randomTitle');
+        const randomMeta = document.getElementById('randomMeta');
+        
+        loadingOverlay.style.display = 'flex';
+        newestBtn.disabled = true;
+        randomBtn.disabled = true;
+        
+        // Preload image
+        const img = new Image();
+        img.onload = () => {
+            randomImage.src = artwork.original;
+            randomTitle.textContent = artwork.title || '無題';
+            randomMeta.textContent = this.formatDate(artwork.date);
+            
+            loadingOverlay.style.display = 'none';
+            newestBtn.disabled = false;
+            randomBtn.disabled = false;
+        };
+        img.onerror = () => {
+            console.error('Failed to load newest image:', artwork.original);
+            // Fallback if image fails to load
+            randomImage.src = artwork.thumbnail || artwork.original;
+            randomTitle.textContent = artwork.title || '無題';
+            randomMeta.textContent = this.formatDate(artwork.date);
+            
+            loadingOverlay.style.display = 'none';
+            newestBtn.disabled = false;
+            randomBtn.disabled = false;
+        };
+        img.src = artwork.original;
+
+        // Move to next newest for subsequent clicks
+        this.currentNewestIndex = (this.currentNewestIndex + 1) % this.sortedArtworks.length;
     }
 
     // Gallery functions
