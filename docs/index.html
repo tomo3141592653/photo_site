@@ -46,6 +46,7 @@
             font-weight: bold;
             color: #00ff88;
             text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+            text-decoration: none;
         }
 
         .pixel-bird {
@@ -55,6 +56,13 @@
             background: linear-gradient(45deg, #00ff88, #00cc6a);
             clip-path: polygon(0 50%, 20% 0, 60% 0, 80% 20%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0 80%);
             animation: float 3s ease-in-out infinite;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pixel-bird:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
         }
 
         @keyframes float {
@@ -574,10 +582,10 @@
 <body>
     <header class="header">
         <div class="nav-container">
-            <div class="logo">
+            <a href="about.html" class="logo">
                 <div class="pixel-bird"></div>
                 tomoπxel
-            </div>
+            </a>
             <nav class="nav-links">
                 <a href="#" class="nav-link active" data-view="random">Home</a>
                 <a href="#" class="nav-link" data-view="gallery">Gallery</a>
