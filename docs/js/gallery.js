@@ -41,7 +41,11 @@ class PixelGallery {
         });
 
         // Random controls
-        document.getElementById('nextRandomBtn').addEventListener('click', () => {
+        document.getElementById('newestBtn').addEventListener('click', () => {
+            this.showNewest();
+        });
+        
+        document.getElementById('randomBtn').addEventListener('click', () => {
             this.nextRandom();
         });
 
@@ -103,13 +107,15 @@ class PixelGallery {
         }
 
         const loadingOverlay = document.getElementById('loadingOverlay');
-        const nextBtn = document.getElementById('nextRandomBtn');
+        const newestBtn = document.getElementById('newestBtn');
+        const randomBtn = document.getElementById('randomBtn');
         const randomImage = document.getElementById('randomImage');
         const randomTitle = document.getElementById('randomTitle');
         const randomMeta = document.getElementById('randomMeta');
         
         loadingOverlay.style.display = 'flex';
-        nextBtn.disabled = true;
+        newestBtn.disabled = true;
+        randomBtn.disabled = true;
         
         // Preload image
         const img = new Image();
@@ -119,7 +125,8 @@ class PixelGallery {
             randomMeta.textContent = this.formatDate(artwork.date);
             
             loadingOverlay.style.display = 'none';
-            nextBtn.disabled = false;
+            newestBtn.disabled = false;
+            randomBtn.disabled = false;
         };
         img.onerror = () => {
             console.error('Failed to load image:', artwork.original);
@@ -129,13 +136,26 @@ class PixelGallery {
             randomMeta.textContent = this.formatDate(artwork.date);
             
             loadingOverlay.style.display = 'none';
-            nextBtn.disabled = false;
+            newestBtn.disabled = false;
+            randomBtn.disabled = false;
         };
         img.src = artwork.original;
     }
 
     nextRandom() {
         this.currentRandomIndex = Math.floor(Math.random() * this.artworks.length);
+        this.showRandomArtwork();
+    }
+
+    showNewest() {
+        if (this.artworks.length === 0) return;
+        
+        // Sort by date to find the newest artwork
+        const sortedArtworks = [...this.artworks].sort((a, b) => new Date(b.date) - new Date(a.date));
+        const newestArtwork = sortedArtworks[0];
+        
+        // Find the index of the newest artwork in the original array
+        this.currentRandomIndex = this.artworks.findIndex(artwork => artwork.id === newestArtwork.id);
         this.showRandomArtwork();
     }
 
