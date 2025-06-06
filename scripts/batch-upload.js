@@ -6,8 +6,11 @@ const { program } = require('commander');
 const { execSync } = require('child_process');
 
 class BatchUploader {
-    async uploadFolder(folderPath) {
+    async uploadFolder(folderPath, useFileDate = false) {
         try {
+            // 作業ディレクトリを考慮した絶対パスに変換
+            const workingDir = process.cwd();
+            folderPath = path.resolve(workingDir, folderPath);
             console.log(`📁 フォルダをスキャン中: ${folderPath}`);
             
             if (!fs.existsSync(folderPath)) {
@@ -31,18 +34,22 @@ class BatchUploader {
             
             for (const file of imageFiles) {
                 const filePath = path.join(folderPath, file);
-                const title = path.basename(file, path.extname(file));
+                // タイトルを空文字に設定
+                const title = '';
                 
                 try {
                     console.log(`\n📤 Processing: ${file}`);
                     
                     // Use the upload.js script
                     const uploadScript = path.join(__dirname, 'upload.js');
-                    const command = `node "${uploadScript}" "${filePath}" --title "${title}"`;
+                    const fileDateOption = useFileDate ? '--use-file-date' : '';
+                    // パスを正規化して引用符で囲む
+                    const normalizedFilePath = path.normalize(filePath).replace(/\\/g, '/');
+                    const command = `node "${uploadScript}" "${normalizedFilePath}" --title "${title}" ${fileDateOption}`;
                     
                     execSync(command, { 
                         stdio: ['inherit', 'inherit', 'inherit'],
-                        cwd: __dirname 
+                        cwd: workingDir  // 作業ディレクトリを設定
                     });
                     
                     successCount++;
@@ -76,6 +83,7 @@ program
     .description('Upload multiple artworks from a folder')
     .argument('<folder>', 'Path to the folder containing images')
     .option('--dry-run', 'Show what would be uploaded without actually uploading')
+    .option('-f, --use-file-date', 'Use file modification date instead of upload date')
     .action(async (folderPath, options) => {
         if (options.dryRun) {
             console.log('🔍 Dry run mode - showing files that would be uploaded:');
@@ -99,7 +107,7 @@ program
         }
 
         const uploader = new BatchUploader();
-        await uploader.uploadFolder(folderPath);
+        await uploader.uploadFolder(folderPath, options.useFileDate);
     });
 
 // Add version info

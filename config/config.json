@@ -1,14 +1,14 @@
 {
   "s3": {
-    "bucket": "your-gallery-bucket-name",
+    "bucket": "tomo3141592653-gallery",
     "region": "ap-northeast-1",
-    "cdnDomain": "https://your-gallery-bucket-name.s3.ap-northeast-1.amazonaws.com"
+    "cdnDomain": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com"
   },
   "site": {
-    "title": "PixelVision.jp",
+    "title": "tomoπixel.jp",
     "description": "ピクセルアートギャラリー",
-    "author": "Your Name",
-    "url": "https://your-username.github.io/photo_site"
+    "author": "tomo3141592653",
+    "url": "https://tomo3141592653.github.io/tomopixel"
   },
   "image": {
     "thumbnailSizes": [300, 600],

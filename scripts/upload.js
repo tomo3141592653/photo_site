@@ -7,6 +7,12 @@ const sharp = require('sharp');
 const { program } = require('commander');
 const mime = require('mime-types');
 
+// AWS SDKの設定
+AWS.config.update({
+    region: 'ap-northeast-1',
+    credentials: new AWS.SharedIniFileCredentials()
+});
+
 // Load configuration
 const configPath = path.join(__dirname, '../config/config.json');
 let config;
@@ -22,8 +28,10 @@ try {
 const s3 = new AWS.S3({ region: config.s3.region });
 
 class ArtworkUploader {
-    async uploadImage(imagePath, title = '', description = '') {
+    async uploadImage(imagePath, title = '', description = '', useFileDate = false) {
         try {
+            // パスを正規化
+            imagePath = path.normalize(imagePath);
             console.log(`📸 アップロード開始: ${imagePath}`);
             
             // Validate file exists
@@ -31,10 +39,16 @@ class ArtworkUploader {
                 throw new Error(`File not found: ${imagePath}`);
             }
 
-            // Generate file info
+            // Get file stats for date
+            const stats = fs.statSync(imagePath);
+            const fileDate = new Date(stats.mtime);
+            const uploadDate = new Date();
+
+            // Use file date or upload date based on option
+            const dateToUse = useFileDate ? fileDate : uploadDate;
+            const timestamp = dateToUse.toISOString().slice(0, 10).replace(/-/g, '');
             const fileName = path.basename(imagePath, path.extname(imagePath));
             const ext = path.extname(imagePath);
-            const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
             const id = `${timestamp}_${fileName}`;
             
             // Read and process image
@@ -44,9 +58,9 @@ class ArtworkUploader {
             
             console.log(`📐 画像サイズ: ${metadata.width}x${metadata.height}`);
             
-            // Generate S3 paths
-            const year = new Date().getFullYear();
-            const month = String(new Date().getMonth() + 1).padStart(2, '0');
+            // Generate S3 paths using the selected date
+            const year = dateToUse.getFullYear();
+            const month = String(dateToUse.getMonth() + 1).padStart(2, '0');
             const basePath = `${year}/${month}`;
             
             const paths = {
@@ -79,9 +93,9 @@ class ArtworkUploader {
             // Create artwork metadata
             const artwork = {
                 id,
-                title: title || fileName,
+                title: title || '',
                 description,
-                date: new Date().toISOString().slice(0, 10),
+                date: dateToUse.toISOString().slice(0, 10),
                 year,
                 month: parseInt(month),
                 original: `${config.s3.cdnDomain}/${paths.original}`,
@@ -150,10 +164,11 @@ program
     .argument('<image>', 'Path to the image file to upload')
     .option('-t, --title <title>', 'Artwork title')
     .option('-d, --description <description>', 'Artwork description')
+    .option('-f, --use-file-date', 'Use file modification date instead of upload date')
     .action(async (imagePath, options) => {
         try {
             const uploader = new ArtworkUploader();
-            await uploader.uploadImage(imagePath, options.title, options.description);
+            await uploader.uploadImage(imagePath, options.title, options.description, options.useFileDate);
         } catch (error) {
             console.error('Upload failed:', error.message);
             process.exit(1);

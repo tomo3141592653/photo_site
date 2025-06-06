@@ -1,6 +1,6 @@
-# PixelVision Gallery - ピクセルアートギャラリー
+# tomoπgraphy - フォトギャラリー
 
-A beautiful, modern pixel art gallery website with cyberpunk aesthetics and powerful upload management tools.
+A beautiful, modern photo gallery website with powerful upload management tools.
 
 ## ✨ Features
 
@@ -29,22 +29,69 @@ Visit the live gallery at: `https://tomo3141592653.github.io/photo_site`
 - AWS Account (for image hosting)
 - Git
 
+### WSL2環境でのセットアップ（Windowsの場合）
+```bash
+# 必要なビルドツールをインストール
+sudo apt-get update
+sudo apt-get install -y build-essential python3 libvips-dev
+
+# 既存のnode_modulesを削除
+rm -rf node_modules package-lock.json
+
+# sharpモジュールを特定のプラットフォーム用にインストール
+npm install --os=linux --cpu=x64 sharp@0.34.2
+
+# 残りの依存関係をインストール
+npm install
+
+# xmlbuilderモジュールを最新版に更新
+npm install xmlbuilder@latest
+```
+
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/tomo3141592653/photo_site.git
-cd photo_site
+git clone https://github.com/tomo3141592653/tomopixel.git
+cd tomopigraphy
 npm install
 npm run setup
 ```
 
 ### 2. Configure AWS
 ```bash
+# AWSアカウントの作成
+# 1. https://aws.amazon.com/jp/ にアクセス
+# 2. 「アカウントを作成」をクリック
+# 3. メールアドレス、パスワード、アカウント名を入力
+# 4. 連絡先情報を入力
+# 5. 支払い情報を入力（クレジットカードが必要）
+# 6. 本人確認（電話番号の確認）
+# 7. サポートプランの選択（無料プランでOK）
+
+# 注意: IAMユーザーの作成（セキュリティのベストプラクティス）
+# 1. AWSマネジメントコンソールで「IAM」を開く
+# 2. 「ユーザー」→「ユーザーを作成」を選択
+# 3. ユーザー名を入力（例：gallery-admin）
+# 4. 「アクセスキー - プログラムによるアクセス」にチェック
+# 5. 必要な権限を付与：
+#    - AmazonS3FullAccess
+# 6. 作成したアクセスキーとシークレットキーを保存
+
 # Install AWS CLI
 aws configure
 # Enter your AWS credentials
 
 # Create S3 bucket
 aws s3 mb s3://tomo3141592653-gallery
+
+# 注意: S3バケットのパブリックアクセス設定
+# 1. AWSマネジメントコンソールでS3バケットを開く
+# 2. 「アクセス許可」タブを選択
+# 3. 「パブリックアクセスをすべてブロック」の設定を編集
+# 4. 以下の設定をオフにする：
+#    - 「パブリックアクセスをすべてブロック」
+#    - 「パブリックアクセスをブロックする新しいACL」
+#    - 「パブリックアクセスをブロックする新しいパブリックバケットポリシー」
+#    - 「パブリックアクセスをブロックするパブリックバケットポリシー」
 
 # Set public read permissions
 aws s3api put-bucket-policy --bucket tomo3141592653-gallery --policy '{
@@ -91,6 +138,9 @@ npm run upload ./my-artwork.png -- --title "夕暮れの街角"
 
 # With title and description
 npm run upload ./my-artwork.png -- --title "夕暮れの街角" --description "美しい夕暮れの風景"
+
+# Use file modification date instead of upload date
+npm run upload ./my-artwork.png -- --use-file-date
 ```
 
 ### Batch Upload
@@ -100,6 +150,9 @@ npm run batch-upload ./artwork-folder/
 
 # Preview what would be uploaded (dry run)
 npm run batch-upload ./artwork-folder/ --dry-run
+
+# Use file modification dates instead of upload dates
+npm run batch-upload ./artwork-folder/ --use-file-date
 ```
 
 ### Deploy Changes
