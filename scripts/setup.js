@@ -11,7 +11,7 @@ class GallerySetup {
     }
 
     async run() {
-        console.log('🚀 PixelVision Gallery セットアップを開始します...\n');
+        console.log('🚀 tomoπgraphy Gallery Setup Starting... / tomoπgraphy ギャラリーセットアップを開始します...\n');
 
         try {
             // 1. Check Node.js version
@@ -33,7 +33,7 @@ class GallerySetup {
             this.showNextSteps();
 
         } catch (error) {
-            console.error('❌ セットアップエラー:', error.message);
+            console.error('❌ Setup Error / セットアップエラー:', error.message);
             process.exit(1);
         }
     }
@@ -42,17 +42,17 @@ class GallerySetup {
         const nodeVersion = process.version;
         const majorVersion = parseInt(nodeVersion.slice(1).split('.')[0]);
         
-        console.log(`📋 Node.js バージョン: ${nodeVersion}`);
+        console.log(`📋 Node.js Version / Node.js バージョン: ${nodeVersion}`);
         
         if (majorVersion < 14) {
-            throw new Error('Node.js 14.0.0 以上が必要です');
+            throw new Error('Node.js 14.0.0+ required / Node.js 14.0.0 以上が必要です');
         }
         
-        console.log('✅ Node.js バージョン OK\n');
+        console.log('✅ Node.js Version OK / Node.js バージョン OK\n');
     }
 
     createDirectories() {
-        console.log('📁 ディレクトリ構造を作成中...');
+        console.log('📁 Creating directory structure... / ディレクトリ構造を作成中...');
         
         const directories = [
             'docs/css',
@@ -66,17 +66,17 @@ class GallerySetup {
             const fullPath = path.join(__dirname, '..', dir);
             if (!fs.existsSync(fullPath)) {
                 fs.mkdirSync(fullPath, { recursive: true });
-                console.log(`  📂 作成: ${dir}`);
+                console.log(`  📂 Created / 作成: ${dir}`);
             } else {
-                console.log(`  ✅ 存在: ${dir}`);
+                console.log(`  ✅ Exists / 存在: ${dir}`);
             }
         });
         
-        console.log('✅ ディレクトリ構造 OK\n');
+        console.log('✅ Directory Structure OK / ディレクトリ構造 OK\n');
     }
 
     initializeArtworks() {
-        console.log('🎨 アートワークデータを初期化中...');
+        console.log('🎨 Initializing artwork data... / アートワークデータを初期化中...');
         
         if (!fs.existsSync(this.artworksPath)) {
             const initialData = {
@@ -86,28 +86,28 @@ class GallerySetup {
             };
             
             fs.writeFileSync(this.artworksPath, JSON.stringify(initialData, null, 2));
-            console.log('  📄 artworks.json を作成しました');
+            console.log('  📄 Created artworks.json / artworks.json を作成しました');
         } else {
-            console.log('  ✅ artworks.json は既に存在します');
+            console.log('  ✅ artworks.json already exists / artworks.json は既に存在します');
         }
         
-        console.log('✅ アートワークデータ OK\n');
+        console.log('✅ Artwork Data OK / アートワークデータ OK\n');
     }
 
     checkConfig() {
-        console.log('⚙️  設定ファイルをチェック中...');
+        console.log('⚙️  Checking configuration... / 設定ファイルをチェック中...');
         
         if (!fs.existsSync(this.configPath)) {
-            console.log('⚠️  config/config.json が見つかりません');
-            console.log('   デフォルト設定ファイルが作成されています');
-            console.log('   S3設定を更新してください');
+            console.log('⚠️  config/config.json not found / config/config.json が見つかりません');
+            console.log('   Default config file should be created / デフォルト設定ファイルが作成されています');
+            console.log('   Please update S3 settings / S3設定を更新してください');
         } else {
             const config = JSON.parse(fs.readFileSync(this.configPath, 'utf8'));
             
-            if (config.s3.bucket === 'your-gallery-bucket-name') {
-                console.log('⚠️  S3バケット名を更新してください');
+            if (config.s3 && (config.s3.bucket === 'your-gallery-bucket-name' || config.s3.bucket === 'tomo3141592653-gallery')) {
+                console.log('⚠️  Please update S3 bucket name / S3バケット名を更新してください');
             } else {
-                console.log('✅ 設定ファイル OK');
+                console.log('✅ Configuration OK / 設定ファイル OK');
             }
         }
         
@@ -115,39 +115,45 @@ class GallerySetup {
     }
 
     installDependencies() {
-        console.log('📦 依存関係をインストール中...');
+        console.log('📦 Installing dependencies... / 依存関係をインストール中...');
         
         try {
             execSync('npm install', { 
                 stdio: ['inherit', 'inherit', 'inherit'],
                 cwd: path.join(__dirname, '..')
             });
-            console.log('✅ 依存関係インストール完了\n');
+            console.log('✅ Dependencies installed / 依存関係インストール完了\n');
         } catch (error) {
-            console.log('⚠️  依存関係のインストールに失敗しました');
-            console.log('   手動で `npm install` を実行してください\n');
+            console.log('⚠️  Failed to install dependencies / 依存関係のインストールに失敗しました');
+            console.log('   Please run `npm install` manually / 手動で `npm install` を実行してください\n');
         }
     }
 
     showNextSteps() {
-        console.log('🎉 セットアップ完了!\n');
-        console.log('📋 次のステップ:');
+        console.log('🎉 Setup Complete! / セットアップ完了!\n');
+        console.log('📋 Next Steps / 次のステップ:');
         console.log('');
-        console.log('1. AWS設定:');
+        console.log('1. AWS Configuration / AWS設定:');
         console.log('   aws configure');
         console.log('');
-        console.log('2. S3バケット作成:');
-        console.log('   aws s3 mb s3://your-gallery-bucket-name');
+        console.log('2. Create S3 Bucket / S3バケット作成:');
+        console.log('   aws s3 mb s3://tomo3141592653-gallery');
         console.log('');
-        console.log('3. config/config.json を編集してS3設定を更新');
+        console.log('3. Edit config/config.json and update S3 settings');
+        console.log('   config/config.json を編集してS3設定を更新');
         console.log('');
-        console.log('4. ローカルサーバー起動:');
+        console.log('4. Start Local Server / ローカルサーバー起動:');
         console.log('   npm run dev');
         console.log('');
-        console.log('5. 画像アップロード:');
+        console.log('5. Upload Images / 画像アップロード:');
+        console.log('   npm run upload ./your-image.jpg -- --title "Artwork Title"');
         console.log('   npm run upload ./your-image.jpg -- --title "作品名"');
         console.log('');
-        console.log('📚 詳細な手順は README.md を参照してください');
+        console.log('6. Deploy to GitHub Pages / GitHub Pages にデプロイ:');
+        console.log('   npm run deploy');
+        console.log('');
+        console.log('📚 For detailed instructions, see README.md');
+        console.log('   詳細な手順は README.md を参照してください');
     }
 }
 
