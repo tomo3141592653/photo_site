@@ -336,6 +336,16 @@ echo '{"artworks":[],"totalCount":0,"lastUpdated":null}' > docs/data/artworks.js
 
 ## 📄 License / ライセンス
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+### Code License / コードライセンス
+This project's source code is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-このプロジェクトはMITライセンスの下でライセンスされています。詳細は[LICENSE](LICENSE)ファイルをご覧ください。
+このプロジェクトのソースコードはMITライセンスの下でライセンスされています。詳細は[LICENSE](LICENSE)ファイルをご覧ください。
+
+### Photography Copyright / 写真の著作権
+All photographs, images, and artwork displayed on this gallery are protected by copyright and belong to the site owner. 
+
+このギャラリーに表示されるすべての写真、画像、および作品は著作権により保護されており、サイト所有者に帰属します。
+
+For more information about licensing and usage rights, please refer to the [LICENSE](LICENSE) file.
+
+ライセンスと使用権に関する詳細情報については、[LICENSE](LICENSE)ファイルをご参照ください。
