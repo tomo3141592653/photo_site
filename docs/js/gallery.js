@@ -16,7 +16,7 @@ class PixelGallery {
     async init() {
         await this.loadArtworks();
         this.setupEventListeners();
-        this.showRandomArtwork();
+        this.nextRandom();
     }
 
     async loadArtworks() {
