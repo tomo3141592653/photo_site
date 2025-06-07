@@ -239,13 +239,12 @@ class PixelGallery {
             
             artworks.forEach(artwork => {
                 if (!artwork || !artwork.id) return;
-                const thumbnailUrl = artwork.thumbnail || artwork.original;
                 const originalUrl = artwork.original;
                 
                 html += `
                     <div class="thumbnail-card ${this.isCompactView ? 'compact' : ''}" onclick="gallery.openModal('${artwork.id}')">
                         <img class="thumbnail-image ${this.isCompactView ? 'compact' : ''}" 
-                             src="${thumbnailUrl}" 
+                             src="${originalUrl}" 
                              loading="lazy" 
                              onerror="this.src='${originalUrl}'"
                              alt="${artwork.title || '無題'}">
