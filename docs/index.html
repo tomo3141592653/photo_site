@@ -94,7 +94,7 @@
 
         .main-content {
             margin-top: 80px;
-            padding: 40px 20px;
+            padding: 10px 20px;
         }
 
         /* ランダム表示セクション */
@@ -102,7 +102,7 @@
             display: block;
             text-align: center;
             margin-bottom: 60px;
-            padding: 60px 0;
+            padding: 10px 0;
         }
 
         .random-section.hidden {
@@ -138,7 +138,7 @@
 
         .random-image-container {
             position: relative;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 20px 40px rgba(0, 255, 136, 0.2);
@@ -148,6 +148,8 @@
         .random-image {
             width: 100%;
             height: auto;
+            max-height: 75vh;
+            object-fit: contain;
             display: block;
             transition: transform 0.3s ease;
         }
@@ -213,7 +215,7 @@
         .random-controls {
             margin: 0;
             display: flex;
-            gap: 10px;
+            gap: 5px;
             justify-content: flex-end;
             flex-shrink: 0;
         }
@@ -642,6 +644,22 @@
                 font-size: 20px;
             }
 
+            .random-section {
+                padding: 10px 0;
+            }
+
+            .random-image {
+                max-height: 60vh;
+            }
+
+            .random-image-container {
+                margin-bottom: 10px;
+            }
+
+            .random-info {
+                padding: 15px;
+            }
+
             .modal {
                 padding: 0;
             }
@@ -746,8 +764,8 @@
                         <div class="random-meta" id="randomMeta"></div>
                     </div>
                     <div class="random-controls">
-                        <button class="control-btn" id="newestBtn" title="最新の写真">⬆</button>
-                        <button class="control-btn" id="randomBtn" title="ランダム表示">🎲</button>
+                        <button class="control-btn" id="newestBtn" title="最新の写真">⤵</button>
+                        <button class="control-btn" id="randomBtn" title="ランダム表示">⇝</button>
                     </div>
                 </div>
             </div>
