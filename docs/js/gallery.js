@@ -65,10 +65,6 @@ class PixelGallery {
         });
 
         // Modal controls
-        document.getElementById('closeModal').addEventListener('click', () => {
-            this.closeModal();
-        });
-        
         document.getElementById('modalPrev').addEventListener('click', () => {
             this.prevModalArtwork();
         });
@@ -127,7 +123,7 @@ class PixelGallery {
         const img = new Image();
         img.onload = () => {
             randomImage.src = artwork.original;
-            randomTitle.textContent = artwork.title || '無題';
+            randomTitle.textContent = artwork.title || '';
             randomMeta.textContent = this.formatDate(artwork.date);
             
             loadingOverlay.style.display = 'none';
@@ -138,7 +134,7 @@ class PixelGallery {
             console.error('Failed to load image:', artwork.original);
             // Fallback if image fails to load
             randomImage.src = artwork.thumbnail || artwork.original;
-            randomTitle.textContent = artwork.title || '無題';
+            randomTitle.textContent = artwork.title || '';
             randomMeta.textContent = this.formatDate(artwork.date);
             
             loadingOverlay.style.display = 'none';
@@ -180,7 +176,7 @@ class PixelGallery {
         const img = new Image();
         img.onload = () => {
             randomImage.src = artwork.original;
-            randomTitle.textContent = artwork.title || '無題';
+            randomTitle.textContent = artwork.title || '';
             randomMeta.textContent = this.formatDate(artwork.date);
             
             loadingOverlay.style.display = 'none';
@@ -191,7 +187,7 @@ class PixelGallery {
             console.error('Failed to load newest image:', artwork.original);
             // Fallback if image fails to load
             randomImage.src = artwork.thumbnail || artwork.original;
-            randomTitle.textContent = artwork.title || '無題';
+            randomTitle.textContent = artwork.title || '';
             randomMeta.textContent = this.formatDate(artwork.date);
             
             loadingOverlay.style.display = 'none';
@@ -247,8 +243,8 @@ class PixelGallery {
                              src="${originalUrl}" 
                              loading="lazy" 
                              onerror="this.src='${originalUrl}'"
-                             alt="${artwork.title || '無題'}">
-                        <div class="thumbnail-title ${this.isCompactView ? 'compact' : ''}">${artwork.title || '無題'}</div>
+                             alt="${artwork.title || ''}">
+                        <div class="thumbnail-title ${this.isCompactView ? 'compact' : ''}">${artwork.title || ''}</div>
                         <div class="thumbnail-meta ${this.isCompactView ? 'compact' : ''}">
                             <span>${this.formatDate(artwork.date)}</span>
                             <span class="thumbnail-date ${this.isCompactView ? 'compact' : ''}">${artwork.year}</span>
@@ -332,7 +328,7 @@ class PixelGallery {
         modalImage.onerror = () => {
             modalImage.src = artwork.thumbnail;
         };
-        modalTitle.textContent = artwork.title;
+        modalTitle.textContent = artwork.title || '';
         modalMeta.textContent = this.formatDate(artwork.date);
     }
 

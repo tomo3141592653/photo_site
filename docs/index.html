@@ -501,6 +501,7 @@
             color: #ffffff;
             cursor: pointer;
             transition: color 0.3s ease;
+            display: none;
         }
 
         .close-btn:hover {
@@ -582,20 +583,19 @@
             .thumbnails-grid.compact {
                 grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
                 gap: 5px;
+                padding: 0;
             }
             
             .thumbnail-card {
                 padding: 10px;
                 border-radius: 10px;
+                margin: 0;
             }
 
             .thumbnail-card.compact {
                 padding: 5px;
                 border-radius: 5px;
-            }
-            
-            .modal-nav {
-                display: none;
+                margin: 0;
             }
             
             .random-title {
@@ -631,19 +631,22 @@
             }
 
             .main-content {
-                padding: 20px 0;
+                padding: 10px 0;
             }
 
             .gallery-section {
                 padding: 0;
+                margin: 0;
             }
 
             .year-section {
-                margin-bottom: 30px;
+                margin-bottom: 20px;
+                padding: 0;
             }
 
             .year-title {
-                margin-bottom: 15px;
+                margin-bottom: 10px;
+                padding: 0 10px;
             }
         }
 
@@ -725,7 +728,6 @@
     <!-- モーダル -->
     <div class="modal" id="artModal">
         <div class="modal-content">
-            <span class="close-btn" id="closeModal">&times;</span>
             <img class="modal-image" id="modalImage" src="">
             <div class="modal-title" id="modalTitle"></div>
             <div class="modal-meta" id="modalMeta"></div>
