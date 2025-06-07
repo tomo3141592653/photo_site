@@ -183,11 +183,69 @@
             100% { transform: rotate(360deg); }
         }
 
-        .random-controls {
-            margin: 30px 0;
+        .random-info {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
-            gap: 15px;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .random-info-left {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .random-title {
+            font-size: 20px;
+        }
+
+        .random-meta {
+            color: #cccccc;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .random-controls {
+            margin: 0;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            flex-shrink: 0;
+        }
+
+        .control-btn {
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid rgba(0, 255, 136, 0.5);
+            color: #ffffff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
             justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0 10px;
+            font-family: inherit;
+        }
+
+        .control-btn:hover {
+            background: rgba(0, 255, 136, 0.4);
+            transform: scale(1.1);
+        }
+
+        .control-btn:disabled {
+            background: rgba(102, 102, 102, 0.2);
+            border-color: rgba(102, 102, 102, 0.5);
+            cursor: not-allowed;
+            transform: none;
         }
 
         .next-btn {
@@ -214,26 +272,6 @@
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
-        }
-
-        .random-info {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .random-title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #00ff88;
-        }
-
-        .random-meta {
-            color: #cccccc;
-            font-size: 16px;
         }
 
         /* ギャラリーセクション */
@@ -340,7 +378,7 @@
         .thumbnail-card {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 15px;
-            padding: 20px;
+            padding: 5px 5px 10px 5px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
@@ -353,9 +391,9 @@
         }
 
         .thumbnail-card.compact {
-            padding: 8px;
-            border-radius: 8px;
-            min-height: 200px;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 0;
         }
 
         .thumbnail-card:hover {
@@ -379,7 +417,7 @@
             max-height: 600px;
             object-fit: contain;
             border-radius: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
             transition: transform 0.3s ease;
             flex: 1;
             aspect-ratio: auto;
@@ -388,7 +426,7 @@
 
         .thumbnail-image.compact {
             max-height: 200px;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             border-radius: 6px;
             object-fit: cover;
         }
@@ -457,7 +495,7 @@
             max-height: none;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 20px;
-            padding: 0;
+            padding: 0 0 80px 0;
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             text-align: center;
@@ -543,14 +581,16 @@
         .modal-navigation {
             display: flex;
             justify-content: center;
-            margin-top: 20px;
-            position: sticky;
+            position: fixed;
             bottom: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 25px;
             backdrop-filter: blur(10px);
-            margin: 5px;
-            padding: 3px;
+            padding: 8px 16px;
+            z-index: 2001;
+            border: 1px solid rgba(0, 255, 136, 0.3);
         }
 
         @media (max-width: 768px) {
@@ -609,7 +649,7 @@
             .modal-content {
                 max-width: 100%;
                 border-radius: 0;
-                padding: 0;
+                padding: 0 0 70px 0;
             }
 
             .modal-image {
@@ -626,8 +666,9 @@
             }
 
             .modal-navigation {
-                margin: 5px;
-                padding: 3px;
+                bottom: 10px;
+                padding: 6px 12px;
+                border-radius: 20px;
             }
 
             .main-content {
@@ -699,14 +740,15 @@
                     </div>
                 </div>
                 
-                <div class="random-controls">
-                    <button class="next-btn" id="newestBtn">recent</button>
-                    <button class="next-btn" id="randomBtn">random</button>
-                </div>
-                
                 <div class="random-info">
-                    <div class="random-title" id="randomTitle">loading...</div>
-                    <div class="random-meta" id="randomMeta"></div>
+                    <div class="random-info-left">
+                        <div class="random-title" id="randomTitle">loading...</div>
+                        <div class="random-meta" id="randomMeta"></div>
+                    </div>
+                    <div class="random-controls">
+                        <button class="control-btn" id="newestBtn" title="最新の写真">⬆</button>
+                        <button class="control-btn" id="randomBtn" title="ランダム表示">🎲</button>
+                    </div>
                 </div>
             </div>
         </section>
