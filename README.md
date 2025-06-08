@@ -94,6 +94,10 @@ cp config/config_template.json config/config.json
 npm run setup
 ```
 
+**Note**: `config.json` is ignored by git for security reasons. Use `config_template.json` as reference.
+
+**注意**: `config.json` はセキュリティ上の理由でgitで無視されます。`config_template.json` を参考にしてください。
+
 ### 3. Configure AWS / AWS設定
 ```bash
 # Creating AWS Account / AWSアカウントの作成

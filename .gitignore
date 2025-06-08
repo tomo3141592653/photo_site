@@ -1,4 +1,7 @@
 /node_modules
 .secret
 
+# Personal configuration - use config_template.json instead
+config/config.json
+
 docs/images/*.jpg

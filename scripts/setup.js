@@ -102,6 +102,14 @@ class GallerySetup {
     generateConfig() {
         console.log('⚙️  Setting up configuration... / 設定ファイルをセットアップ中...');
         
+        // If config.json doesn't exist, create from template
+        if (!fs.existsSync(this.configPath)) {
+            if (fs.existsSync(this.configTemplatePath)) {
+                console.log('  📄 Creating config.json from template... / テンプレートからconfig.jsonを作成中...');
+                fs.copyFileSync(this.configTemplatePath, this.configPath);
+            }
+        }
+
         // If config.json already exists and is not a template, skip generation
         if (fs.existsSync(this.configPath)) {
             const existingConfig = JSON.parse(fs.readFileSync(this.configPath, 'utf8'));
