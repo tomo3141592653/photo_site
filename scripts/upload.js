@@ -63,11 +63,20 @@ class ArtworkUploader {
             const month = String(dateToUse.getMonth() + 1).padStart(2, '0');
             const basePath = `${year}/${month}`;
             
+            // レスポンシブ画像のサイズ定義
+            const responsiveSizes = [640, 768, 1024, 1280, 1536, 1920, 2560];
+            
             const paths = {
                 original: `originals/${basePath}/${id}${ext}`,
                 thumbnail: `thumbnails/${basePath}/${id}_thumb.jpg`,
-                webp: `webp/${basePath}/${id}.webp`
+                webp: `webp/${basePath}/${id}.webp`,
+                responsive: {}
             };
+            
+            // レスポンシブ画像のパス生成
+            responsiveSizes.forEach(size => {
+                paths.responsive[size] = `responsive/${basePath}/${id}_${size}w.jpg`;
+            });
             
             // Upload original image
             await this.uploadToS3(imageBuffer, paths.original, mime.lookup(ext) || 'application/octet-stream');
@@ -90,6 +99,29 @@ class ArtworkUploader {
             await this.uploadToS3(webpBuffer, paths.webp, 'image/webp');
             console.log(`✅ WebP変換・アップロード完了`);
             
+            // Generate and upload responsive images
+            const responsiveUrls = {};
+            for (const size of responsiveSizes) {
+                // 元画像のサイズより大きい場合はスキップ
+                if (size > metadata.width) {
+                    console.log(`⏭️  ${size}w: 元画像より大きいためスキップ`);
+                    continue;
+                }
+                
+                const responsiveBuffer = await image
+                    .resize(size, null, { 
+                        fit: 'inside', 
+                        withoutEnlargement: true,
+                        fastShrinkOnLoad: false 
+                    })
+                    .jpeg({ quality: config.image.jpegQuality })
+                    .toBuffer();
+                
+                await this.uploadToS3(responsiveBuffer, paths.responsive[size], 'image/jpeg');
+                responsiveUrls[size] = `${config.s3.cdnDomain}/${paths.responsive[size]}`;
+                console.log(`✅ ${size}w画像生成・アップロード完了`);
+            }
+            
             // Create artwork metadata
             const artwork = {
                 id,
@@ -101,6 +133,7 @@ class ArtworkUploader {
                 original: `${config.s3.cdnDomain}/${paths.original}`,
                 thumbnail: `${config.s3.cdnDomain}/${paths.thumbnail}`,
                 webp: `${config.s3.cdnDomain}/${paths.webp}`,
+                responsive: responsiveUrls,
                 dimensions: { width: metadata.width, height: metadata.height },
                 fileSize: imageBuffer.length
             };

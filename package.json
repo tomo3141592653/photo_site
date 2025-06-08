@@ -6,6 +6,7 @@
   "scripts": {
     "upload": "node scripts/upload.js",
     "batch-upload": "node scripts/batch-upload.js",
+    "generate-responsive": "node scripts/generate-responsive.js",
     "dev": "npx http-server docs -p 8000 -c-1",
     "build": "echo 'Build complete - static site ready'",
     "deploy": "git add . && git commit -m 'Update gallery' && git push",

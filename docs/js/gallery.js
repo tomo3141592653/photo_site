@@ -235,14 +235,18 @@ class PixelGallery {
             
             artworks.forEach(artwork => {
                 if (!artwork || !artwork.id) return;
-                const originalUrl = artwork.original;
+                const srcset = this.generateSrcset(artwork);
+                const sizes = this.getSizesAttribute(this.isCompactView);
+                const fallbackSrc = artwork.thumbnail || artwork.original;
                 
                 html += `
                     <div class="thumbnail-card ${this.isCompactView ? 'compact' : ''}" onclick="gallery.openModal('${artwork.id}')">
                         <img class="thumbnail-image ${this.isCompactView ? 'compact' : ''}" 
-                             src="${originalUrl}" 
+                             src="${fallbackSrc}"
+                             srcset="${srcset}"
+                             sizes="${sizes}"
                              loading="lazy" 
-                             onerror="this.src='${originalUrl}'"
+                             onerror="this.src='${artwork.original}'"
                              alt="${artwork.title || ''}">
                         <div class="thumbnail-title ${this.isCompactView ? 'compact' : ''}">${artwork.title || ''}</div>
                         <div class="thumbnail-meta ${this.isCompactView ? 'compact' : ''}">
@@ -363,6 +367,42 @@ class PixelGallery {
         } catch (error) {
             console.error('Invalid date format:', dateString);
             return '日付不明';
+        }
+    }
+
+    // レスポンシブ画像のsrcsetを生成
+    generateSrcset(artwork) {
+        if (!artwork.responsive || Object.keys(artwork.responsive).length === 0) {
+            // レスポンシブ画像がない場合はオリジナルのみ
+            return artwork.original;
+        }
+
+        const srcsetParts = [];
+        const responsiveSizes = [640, 768, 1024, 1280, 1536, 1920, 2560];
+        
+        // 利用可能なレスポンシブ画像を追加
+        responsiveSizes.forEach(size => {
+            if (artwork.responsive[size]) {
+                srcsetParts.push(`${artwork.responsive[size]} ${size}w`);
+            }
+        });
+
+        // オリジナル画像を最大サイズとして追加
+        if (artwork.dimensions && artwork.dimensions.width) {
+            srcsetParts.push(`${artwork.original} ${artwork.dimensions.width}w`);
+        }
+
+        return srcsetParts.join(', ');
+    }
+
+    // レスポンシブ画像の適切なsizesを取得
+    getSizesAttribute(isCompact = false) {
+        if (isCompact) {
+            // compact view用のsizes（複数列グリッド）
+            return '(max-width: 430px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw';
+        } else {
+            // normal view用のsizes（1列表示、最大幅1200px）
+            return '(max-width: 768px) calc(100vw - 40px), min(1200px, calc(100vw - 40px))';
         }
     }
 }
