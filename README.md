@@ -36,6 +36,22 @@ Visit the live gallery at: `https://tomo3141592653.github.io/tomopigraphy/`
 
 ライブギャラリーはこちら: `https://tomo3141592653.github.io/tomopigraphy/`
 
+## ⚠️ **Important Notice / 重要なお知らせ**
+
+**Before starting, you MUST create your own S3 bucket and update the configuration!**
+
+**開始する前に、必ず自分専用のS3バケットを作成して設定を更新してください！**
+
+This template includes placeholder values that you need to replace with your own:
+- `YOUR-BUCKET-NAME` → Your unique S3 bucket name
+- `Your Gallery Name` → Your gallery title
+- `Your Name` → Your name
+
+このテンプレートには、あなた自身の値に置き換える必要があるプレースホルダーが含まれています：
+- `YOUR-BUCKET-NAME` → あなた独自のS3バケット名
+- `Your Gallery Name` → あなたのギャラリータイトル
+- `Your Name` → あなたの名前
+
 ## 📦 Quick Setup / クイックセットアップ
 
 ### Prerequisites / 前提条件
@@ -43,23 +59,12 @@ Visit the live gallery at: `https://tomo3141592653.github.io/tomopigraphy/`
 - AWS Account (for image hosting) / AWS アカウント（画像ホスティング用）
 - Git
 
-### WSL2 Environment Setup (Windows) / WSL2環境でのセットアップ（Windows の場合）
+### WSL2/Linux Environment Setup / WSL2・Linux環境でのセットアップ
 ```bash
-# Install required build tools / 必要なビルドツールをインストール
+# Install required build tools (if needed) / 必要なビルドツールをインストール（必要に応じて）
 sudo apt-get update
 sudo apt-get install -y build-essential python3 libvips-dev
 
-# Remove existing node_modules / 既存のnode_modulesを削除
-rm -rf node_modules package-lock.json
-
-# Install sharp module for specific platform / sharpモジュールを特定のプラットフォーム用にインストール
-npm install --os=linux --cpu=x64 sharp@0.34.2
-
-# Install remaining dependencies / 残りの依存関係をインストール
-npm install
-
-# Update xmlbuilder module to latest version / xmlbuilderモジュールを最新版に更新
-npm install xmlbuilder@latest
 ```
 
 ### 1. Clone & Install / クローンとインストール
@@ -67,10 +72,29 @@ npm install xmlbuilder@latest
 git clone https://github.com/tomo3141592653/tomopixel.git
 cd tomopigraphy
 npm install
+```
+
+### 2. Setup Configuration / 設定のセットアップ
+
+#### Option A: Interactive Setup (Recommended) / 方法A: 対話式セットアップ（推奨）
+```bash
+npm run setup -- --bucket YOUR-BUCKET-NAME --title "My Gallery" --author "Your Name"
+```
+
+#### Option B: Manual Setup / 方法B: 手動セットアップ
+```bash
+# 1. Copy template / テンプレートをコピー
+cp config/config_template.json config/config.json
+
+# 2. Edit config.json manually / config.jsonを手動で編集
+# Replace YOUR-BUCKET-NAME with your actual bucket name
+# YOUR-BUCKET-NAMEを実際のバケット名に変更
+
+# 3. Run basic setup / 基本セットアップを実行
 npm run setup
 ```
 
-### 2. Configure AWS / AWS設定
+### 3. Configure AWS / AWS設定
 ```bash
 # Creating AWS Account / AWSアカウントの作成
 # 1. Access https://aws.amazon.com/jp/ / 1. https://aws.amazon.com/jp/ にアクセス
@@ -94,8 +118,9 @@ npm run setup
 aws configure
 # Enter your AWS credentials / AWS認証情報を入力
 
-# Create S3 bucket / S3バケットを作成
-aws s3 mb s3://tomo3141592653-gallery
+# Create S3 bucket (replace YOUR-BUCKET-NAME with your unique bucket name)
+# S3バケットを作成（YOUR-BUCKET-NAMEを独自のバケット名に変更してください）
+aws s3 mb s3://YOUR-BUCKET-NAME
 
 # Note: S3 Bucket Public Access Settings / 注意: S3バケットのパブリックアクセス設定
 # 1. Open S3 bucket in AWS Management Console / 1. AWSマネジメントコンソールでS3バケットを開く
@@ -107,8 +132,9 @@ aws s3 mb s3://tomo3141592653-gallery
 #    - "Block new public bucket policies" / 「パブリックアクセスをブロックする新しいパブリックバケットポリシー」
 #    - "Block public bucket policies" / 「パブリックアクセスをブロックするパブリックバケットポリシー」
 
-# Set public read permissions / パブリック読み取り権限を設定
-aws s3api put-bucket-policy --bucket tomo3141592653-gallery --policy '{
+# Set public read permissions (replace YOUR-BUCKET-NAME)
+# パブリック読み取り権限を設定（YOUR-BUCKET-NAMEを変更してください）
+aws s3api put-bucket-policy --bucket YOUR-BUCKET-NAME --policy '{
   "Version": "2012-10-17",
   "Statement": [
     {
@@ -116,22 +142,10 @@ aws s3api put-bucket-policy --bucket tomo3141592653-gallery --policy '{
       "Effect": "Allow", 
       "Principal": "*",
       "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::tomo3141592653-gallery/*"
+      "Resource": "arn:aws:s3:::YOUR-BUCKET-NAME/*"
     }
   ]
 }'
-```
-
-### 3. Update Configuration / 設定を更新
-Edit `config/config.json` / `config/config.json` を編集:
-```json
-{
-  "s3": {
-    "bucket": "tomo3141592653-gallery",
-    "region": "ap-northeast-1",
-    "cdnDomain": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com"
-  }
-}
 ```
 
 ### 4. Start Development / 開発開始

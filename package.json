@@ -1,7 +1,7 @@
 {
-  "name": "pixel-gallery",
+  "name": "tomopigraphy",
   "version": "1.0.0",
-  "description": "Pixel Art Gallery - ピクセルアートギャラリー",
+  "description": "photo gallery",
   "main": "docs/index.html",
   "scripts": {
     "upload": "node scripts/upload.js",
@@ -9,8 +9,9 @@
     "generate-responsive": "node scripts/generate-responsive.js",
     "dev": "npx http-server docs -p 8000 -c-1",
     "build": "echo 'Build complete - static site ready'",
-    "deploy": "git add . && git commit -m 'Update gallery' && git push",
+        "deploy": "git add . && git commit -m 'Update gallery' && git push",
     "setup": "node scripts/setup.js",
+    "setup-new": "node scripts/setup.js --bucket",
     "clean": "node scripts/clean.js"
   },
   "keywords": [

@@ -5,9 +5,11 @@ const path = require('path');
 const { execSync } = require('child_process');
 
 class GallerySetup {
-    constructor() {
+    constructor(options = {}) {
         this.configPath = path.join(__dirname, '../config/config.json');
+        this.configTemplatePath = path.join(__dirname, '../config/config_template.json');
         this.artworksPath = path.join(__dirname, '../docs/data/artworks.json');
+        this.options = options;
     }
 
     async run() {
@@ -23,13 +25,16 @@ class GallerySetup {
             // 3. Initialize artworks.json if it doesn't exist
             this.initializeArtworks();
 
-            // 4. Check config
+            // 4. Generate config from template if needed
+            this.generateConfig();
+            
+            // 5. Check config
             this.checkConfig();
 
-            // 5. Install dependencies
+            // 6. Install dependencies
             this.installDependencies();
 
-            // 6. Show next steps
+            // 7. Show next steps
             this.showNextSteps();
 
         } catch (error) {
@@ -94,6 +99,48 @@ class GallerySetup {
         console.log('✅ Artwork Data OK / アートワークデータ OK\n');
     }
 
+    generateConfig() {
+        console.log('⚙️  Setting up configuration... / 設定ファイルをセットアップ中...');
+        
+        // If config.json already exists and is not a template, skip generation
+        if (fs.existsSync(this.configPath)) {
+            const existingConfig = JSON.parse(fs.readFileSync(this.configPath, 'utf8'));
+            if (existingConfig.s3 && existingConfig.s3.bucket !== 'YOUR-BUCKET-NAME') {
+                console.log('  ✅ Configuration already exists / 設定ファイルは既に存在します');
+                return;
+            }
+        }
+
+        // Generate config from template if user provided options
+        if (this.options.bucket) {
+            console.log('  📝 Generating config from template... / テンプレートから設定を生成中...');
+            
+            if (!fs.existsSync(this.configTemplatePath)) {
+                console.log('  ⚠️  Template not found, using default settings / テンプレートが見つかりません、デフォルト設定を使用');
+                return;
+            }
+
+            const template = JSON.parse(fs.readFileSync(this.configTemplatePath, 'utf8'));
+            
+            // Replace placeholders
+            template.s3.bucket = this.options.bucket;
+            template.s3.cdnDomain = `https://${this.options.bucket}.s3.${template.s3.region}.amazonaws.com`;
+            
+            if (this.options.title) template.site.title = this.options.title;
+            if (this.options.description) template.site.description = this.options.description;
+            if (this.options.author) template.site.author = this.options.author;
+            if (this.options.url) template.site.url = this.options.url;
+
+            fs.writeFileSync(this.configPath, JSON.stringify(template, null, 2));
+            console.log('  ✅ Configuration generated successfully / 設定ファイルを正常に生成しました');
+        } else {
+            console.log('  ℹ️  No bucket name provided, please update config manually');
+            console.log('     バケット名が指定されていません、手動で設定を更新してください');
+        }
+        
+        console.log('');
+    }
+
     checkConfig() {
         console.log('⚙️  Checking configuration... / 設定ファイルをチェック中...');
         
@@ -104,7 +151,7 @@ class GallerySetup {
         } else {
             const config = JSON.parse(fs.readFileSync(this.configPath, 'utf8'));
             
-            if (config.s3 && (config.s3.bucket === 'your-gallery-bucket-name' || config.s3.bucket === 'tomo3141592653-gallery')) {
+            if (config.s3 && (config.s3.bucket === 'YOUR-BUCKET-NAME' || config.s3.bucket === 'your-gallery-bucket-name')) {
                 console.log('⚠️  Please update S3 bucket name / S3バケット名を更新してください');
             } else {
                 console.log('✅ Configuration OK / 設定ファイル OK');
@@ -137,7 +184,7 @@ class GallerySetup {
         console.log('   aws configure');
         console.log('');
         console.log('2. Create S3 Bucket / S3バケット作成:');
-        console.log('   aws s3 mb s3://tomo3141592653-gallery');
+        console.log('   aws s3 mb s3://YOUR-BUCKET-NAME');
         console.log('');
         console.log('3. Edit config/config.json and update S3 settings');
         console.log('   config/config.json を編集してS3設定を更新');
@@ -159,7 +206,20 @@ class GallerySetup {
 
 // Run setup if called directly
 if (require.main === module) {
-    const setup = new GallerySetup();
+    const { program } = require('commander');
+    
+    program
+        .name('setup')
+        .description('tomoπgraphy Gallery Setup')
+        .option('-b, --bucket <name>', 'S3 bucket name')
+        .option('-t, --title <title>', 'Gallery title')
+        .option('-d, --description <desc>', 'Gallery description')
+        .option('-a, --author <author>', 'Author name')
+        .option('-u, --url <url>', 'Gallery URL')
+        .parse();
+
+    const options = program.opts();
+    const setup = new GallerySetup(options);
     setup.run();
 }
 

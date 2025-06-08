@@ -1,0 +1,24 @@
+{
+  "s3": {
+    "bucket": "YOUR-BUCKET-NAME",
+    "region": "ap-northeast-1",
+    "cdnDomain": "https://YOUR-BUCKET-NAME.s3.ap-northeast-1.amazonaws.com"
+  },
+  "site": {
+    "title": "Your Gallery Name",
+    "description": "Your gallery description",
+    "author": "Your Name",
+    "url": "https://your-username.github.io/your-gallery"
+  },
+  "image": {
+    "thumbnailSizes": [300, 600],
+    "webpQuality": 80,
+    "jpegQuality": 90,
+    "supportedFormats": ["jpg", "jpeg", "png", "gif", "webp", "bmp", "tiff"]
+  },
+  "gallery": {
+    "itemsPerPage": 24,
+    "defaultView": "normal",
+    "enableCompactView": true
+  }
+} 
