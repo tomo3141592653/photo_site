@@ -1,6 +1,56 @@
 {
   "artworks": [
     {
+      "id": "20250626_DSC00499",
+      "title": "",
+      "description": "",
+      "date": "2025-06-26",
+      "year": 2025,
+      "month": 6,
+      "original": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com/originals/2025/06/20250626_DSC00499.jpg",
+      "thumbnail": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com/thumbnails/2025/06/20250626_DSC00499_thumb.jpg",
+      "webp": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com/webp/2025/06/20250626_DSC00499.webp",
+      "responsive": {
+        "640": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com/responsive/2025/06/20250626_DSC00499_640w.jpg",
+        "768": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com/responsive/2025/06/20250626_DSC00499_768w.jpg",
+        "1024": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com/responsive/2025/06/20250626_DSC00499_1024w.jpg",
+        "1280": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com/responsive/2025/06/20250626_DSC00499_1280w.jpg",
+        "1536": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com/responsive/2025/06/20250626_DSC00499_1536w.jpg",
+        "1920": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com/responsive/2025/06/20250626_DSC00499_1920w.jpg",
+        "2560": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com/responsive/2025/06/20250626_DSC00499_2560w.jpg"
+      },
+      "dimensions": {
+        "width": 6000,
+        "height": 4000
+      },
+      "fileSize": 9460448
+    },
+    {
+      "id": "20250626_DSC03395",
+      "title": "",
+      "description": "",
+      "date": "2025-06-26",
+      "year": 2025,
+      "month": 6,
+      "original": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com/originals/2025/06/20250626_DSC03395.jpg",
+      "thumbnail": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com/thumbnails/2025/06/20250626_DSC03395_thumb.jpg",
+      "webp": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com/webp/2025/06/20250626_DSC03395.webp",
+      "responsive": {
+        "640": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com/responsive/2025/06/20250626_DSC03395_640w.jpg",
+        "768": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com/responsive/2025/06/20250626_DSC03395_768w.jpg",
+        "1024": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com/responsive/2025/06/20250626_DSC03395_1024w.jpg",
+        "1280": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com/responsive/2025/06/20250626_DSC03395_1280w.jpg",
+        "1536": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com/responsive/2025/06/20250626_DSC03395_1536w.jpg",
+        "1920": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com/responsive/2025/06/20250626_DSC03395_1920w.jpg",
+        "2560": "https://tomo3141592653-gallery.s3.ap-northeast-1.amazonaws.com/responsive/2025/06/20250626_DSC03395_2560w.jpg"
+      },
+      "dimensions": {
+        "width": 6000,
+        "height": 4000
+      },
+      "fileSize": 5372179
+    },
+    {
       "id": "20250607_tumblr_pplhzjY9bx1skj7yuo1_1280",
       "title": "",
       "description": "",
@@ -14369,7 +14419,7 @@
       }
     }
   ],
-  "totalCount": 680,
-  "lastUpdated": "2025-06-08T04:15:47.217Z",
+  "totalCount": 681,
+  "lastUpdated": "2025-06-26T23:43:24.294Z",
   "lastUpdate": "2025-06-07"
 }
