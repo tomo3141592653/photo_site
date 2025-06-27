@@ -7,8 +7,7 @@ const fs = require('fs').promises;
 const { exec } = require('child_process');
 const { promisify } = require('util');
 
-// Import existing upload functionality
-const uploadImage = require('./upload');
+// We'll use exec to call upload script instead of requiring it
 
 const execAsync = promisify(exec);
 const app = express();
@@ -139,10 +138,13 @@ async function uploadImageFile(file) {
     const uploadScript = path.join(__dirname, 'upload.js');
     
     // Execute the upload script with the temporary file
-    const command = `node "${uploadScript}" "${tempImagePath}" --title "${path.parse(originalName).name}"`;
+    const titleName = path.parse(originalName).name;
+    const command = `node "${uploadScript}" "${tempImagePath}" --title "${titleName}"`;
     
     try {
-        const { stdout, stderr } = await execAsync(command);
+        const { stdout, stderr } = await execAsync(command, {
+            cwd: path.join(__dirname, '..')
+        });
         
         if (stderr) {
             console.warn('Upload warnings:', stderr);
